@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FeirasLivres.Core\FeirasLivres.Core.csproj" />
+    <ProjectReference Include="..\FeirasLivres.Infrastructure\FeirasLivres.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

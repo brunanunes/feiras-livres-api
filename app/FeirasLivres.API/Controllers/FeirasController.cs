@@ -67,12 +67,6 @@ namespace FeirasLivres.API.Controllers
         {
             _logger.LogDebug("Method CreateFeiraAsync Called");
 
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Bad Request");
-                return BadRequest(new BaseResponse<object>(ModelState));
-            }
-
             var feira = await _feiraServices.CreateFeira(feiraRequest);
 
             return Ok(new BaseResponse<Core.Entities.Feira>(feira) { Succeeded = true });
@@ -86,10 +80,10 @@ namespace FeirasLivres.API.Controllers
         {
             _logger.LogDebug("Method UpdateFeiraAsync Called");
 
-            if (!ModelState.IsValid)
+            if (id <= 0)
             {
                 _logger.LogError("Bad Request");
-                return BadRequest(new BaseResponse<object>(ModelState));
+                return BadRequest(new BaseResponse<string>("Invalid Id"));
             }
 
             var feira = await _feiraServices.UpdateFeira(id, feiraRequest);

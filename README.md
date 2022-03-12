@@ -1,115 +1,461 @@
-# API - Central de Erros @Codenation em Parceria com @Itaú
-## squad-3-ad-csharp-women-itau-1
+# API - Feiras Livres
 
 ### Índice
 * [Objetivo](#objetivo)
+* [Funcionalidades](#funcionalidades)
+* [Requisitos](#requisitos)
 * [Tecnologias e Ferramentas Utilizadas](#tecnologias-utilizadas)
 * [Banco de Dados](#banco-de-dados)
-* [Rodar Aplicação](#run-aplicacao)
-* [Deploy da Aplicação](#deploy-da-aplicação)
-* [Demonstração da Aplicação](#demonstração)
-* [Apresentação](#slides)
+* [Executar a Aplicação](#executar-a-aplicação)
 * [Rotas](#rotas)
-* [FrontEnd](#front-end)
-* [Agradecimentos](#agradecimentos)
-
-### Trabalho desenvolvido pela Squad:
-
-- [Jaqueline Laurenti](https://www.linkedin.com/in/jaqueline-laurenti-30b15933/)
-
-- [Juliane Ventura](https://linkedin.com/in/julianeventura)
-
-- [Marcela do Vale](https://www.linkedin.com/in/marceladovale/)
-
-- [Priscila Silva](https://linkedin.com/in/silva-priscila)
-
+* [Exemplos](#exemplos)
 
 ### Objetivo
-Em projetos modernos é cada vez mais comum o uso de arquiteturas baseadas em serviços ou microsserviços. Nestes ambientes complexos, erros podem surgir em diferentes camadas da aplicação (backend, frontend, mobile, desktop) e mesmo em serviços distintos. Desta forma, é muito importante que os desenvolvedores possam centralizar todos os registros de erros em um local, de onde podem monitorar e tomar decisões mais acertadas. Neste projeto vamos implementar um sistema para centralizar registros de erros de aplicações.
+Disposibilizar uma API que exponha os dados das feiras livres da cidade de São Paulo utilizando a base de informações DEINFO_AB_FEIRASLIVRES_2014.csv disponíveis em http://www.prefeitura.sp.gov.br/cidade/secretarias/upload/chamadas/feiras_livres_1429113213.zip
 
-A arquitetura do projeto é formada por:
-
-### Backend - API
-- criar endpoints para serem usados pelo frontend da aplicação
-- criar um endpoint que será usado para gravar os logs de erro em um banco de dados relacional
-- a API deve ser segura, permitindo acesso apenas com um token de autenticação válido
-#### Frontend
-- deve implementar as funcionalidades apresentadas nos wireframes
-- deve ser acessada adequadamente tanto por navegadores desktop quanto mobile
-- deve consumir a API do produto
-- desenvolvida na forma de uma Single Page Application
+### Funcionalidades
+- cadastro de uma nova feira
+- exclusão de uma feira através de seu código de registro
+- alteração dos campos cadastrados de uma feira, exceto seu código de registro
+- busca de feiras utilizando ao menos um dos parâmetros abaixo:
+    - distrito
+    - regiao5
+    - nome_feira
+    - bairro
+    
+### Requisitos
+- os dados fornecidos pela Prefeitura de São Paulo devem ser armazenados em um banco de dados relacional
+- a solução deve conter um script para importar os dados do arquivo DEINFO_AB_FEIRASLIVRES_2014.csv para o banco relacional
+- a API deve seguir os conceitos REST
+- o Content-Type das respostas da API deve ser application/json
+- o código da solução deve conter testes e algum mecanismo documentado para gerar a informação de cobertura dos testes
+- a aplicação deve gravar logs estruturados em arquivos texto
 
 ### Tecnologias Utilizadas
-- C# .NET
+- ASP.NET Core 5
+- C#
 - Entity Framework
 - Clean Code 
 - Swagger
+- ReportGenerator
 
 ### Ferramentas Utilizadas 
 - Visual Studio
-- Trello
-- WhatsApp
-- Azure 
-- Heroku
-- Docker
+- SQL Server
 
 ### Banco de dados
-- SQLServer criado através do Azure.
+ - para a criação do banco de dados é necessário a execução do 1.CreateDataBase disponível no diretório database deste projeto
+ - após a criação, deve-se realizar a importação dos dados disponibilizados pela prefeitura utilizando o sccript 2.LoadData presente no mesmo diretório. Atenção: para correto funcionamento do script antes da execução é necessário alterar o caminho para o arquivo, presente na linha 28 ('C:\Users\username\source\repos\feira-livre-api\database\DEINFO_AB_FEIRASLIVRES_2014.csv'), de acordo com o caminho do seu repositório 
 
-### Rodar Aplicação
-![frustrated-computer-baboon](https://media.giphy.com/media/h8yZBiRGWRu8KuukDB/giphy.gif)
-![frustrated-computer-baboon](https://media.giphy.com/media/h8Irzr4ilkQx3UzceS/giphy.gif) <p>
-   Acessar a url: https://localhost:5001/swagger/index.html 
-
-
-### Deploy da Aplicação
-O deploy da aplicação foi feito através do Heroku, utilizando o Docker Image.
-* [API](https://central-erros-itau.herokuapp.com/swagger/index.html)
-
-### Demonstração da Aplicação
-* [BACK-END](https://youtu.be/8GfyJ87uzwk)
-* [FRONT-END](https://youtu.be/YLRLoekZKCc)
-
-### Slides
-Slides utilizados na apresentação:
-[PPT-VIDEO](https://youtu.be/MHhMMXfHxuY) <p>
-![frustrated-computer-baboon](https://media.giphy.com/media/hSAFqlKYrglGSTwORV/giphy.gif)
-
+### Executar a Aplicação
+Para executar a aplicação abra o prompt de comando no \FeirasLivres.API e execute o seguinte comando:
+- dotnet run --project FeirasLivres.API.csproj
+- Acessar a url: https://localhost:5001/swagger/index.html
 
 ### Rotas
-* AuthController
-    * POST /Auth/registerUser - Realiza cadastro de um novo usuário.
-    * POST /Auth/login - Realiza login do usuário cadastrado.
-    * POST /Auth/logout - Realiza o logout do usuário.
-    * POST /Auth/forgotPassword - Envia codigo para que o usuário possa resetar a senha.
-    * GET  /Auth/resetPassword - Usuário deverá preencher Id e email para verificar o codigo de reset.
-    * POST /Auth/resetPasswordConfirm - Usuário reseta a senha.
+Utilize as rotas auxiliares para consulta dos Id's de Distrito e Subprefeitura necessários para as operações de cadastro e alteração
 
-* ErrorOccurrenceController
-    * POST /ErrorOccurrence - Cadastra novo erro na Central.
-    * GET /ErrorOccurrence - Traz todos os erros ativos cadastrados na Central.
-    * GET /ErrorOccurrence/id - Traz erro por número de ID.
-    * GET /ErrorOccurrence/getErrorDetails/id - Traz detalhes de um determinado erro por ID.
-    * GET /ErrorOcurrence/getFiledErrors - Traz todos os erros arquivados
-    * GET /ErrorOccurrence/idAmbiente/idOrdenacao/idBusca/textoBuscado - Filtra os erros de acordo com os filtros selecionados.
-    * PUT /ErrorOccurrence/setFiledErrors/id - Arquiva erro por ID.
-    * PUT /ErrorOccurrence/setUnarchiveErrors/id - Desarquiva erro por ID.
-    * DELETE /ErrorOccurrence/id - Deleta erro da Central por ID.
+* FeirasController
+    * GET /feiras/feirasbyfilter?distrito=&regiao=&nome_feira=&bairro= - Retorna as feiras de acordo com os filtros selecionados
+    * DELETE /feiras/id - Deleta feira por Id.    
+    * PUT /feiras/id - Altera dos dados da feira por Id    
+    * POST /feiras - Cadastra nova feira
+* DistritosController
+    * GET  /distritos - Retorna todos os distritos cadastrados no banco de dados
+    * GET  /distritos/id - Retorna as informações do distrito por Id
+    
+* SubprefeiturasController
+    * GET  /subprefeituras - Retorna todas as subprefeituras cadastradas no banco de dados
+    * GET  /subprefeituras/id - Retorna as informações da subprefeitura por Id
 
-* EnvironmentController
-    * GET /Environment - Traz todos os ambientes da Central.
-    * DELETE /Environment/id - Deleta ambiente por ID.
+### Exemplos
+### /api/feiras/feirasbyfilter
 
-* LevelController
-    * GET /Level - Traz todos os levels da Central.
-    * DELETE /Level/id - Deleta level por ID.
+#### GET
+##### Parameters
 
-### Front-End
-Front-end foi desenvolvido por Jaqueline Laurenti com a tecnologia React. <p>
-![frustrated-computer-baboon](https://media.giphy.com/media/fSRxyZEZnvDtrlqJXJ/giphy.gif)
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| distrito | query | Nome do distrito | No | string |
+| regiao | query | Regiao | No | string |
+| nome_feira | query | Nome da feira | No | string |
+| bairro | query | Bairro | No | string |
 
+##### Responses
 
-### Agradecimentos
-* Codenation
-* Ingrid Oliveira
-* Itaú
+Code = 200
+``` json
+{
+  "succeeded": true,
+  "data": [
+    {
+      "id": 83,
+      "longitude": -46442096,
+      "latitude": -23599344,
+      "setor_censitario": "355030833000015",
+      "area_ponderacao": "3550308005275",
+      "regiao": "Leste",
+      "subregiao": "Leste 2",
+      "nome_feira": "JARDIM IGUATEMI",
+      "registro": "5125-0",
+      "logradouro": "RUA CUBAS DE MENDONCA",
+      "numero": "S/N",
+      "bairro": "JD IGUATEMI",
+      "distrito": {
+        "codigo_distrito": 32,
+        "nome_distrito": "IGUATEMI"
+      },
+      "subprefeitura": {
+        "codigo_subprefeitura": 30,
+        "nome_subprefeitura": "SAO MATEUS"
+      }
+    }
+  ]
+}
+```
+
+Code = 400
+``` json
+{
+  "succeeded": false,
+  "message": "You must use at least one filter"
+}
+```
+
+Code = 404
+``` json
+{
+  "succeeded": false,
+  "message": "No record found for the this filters"
+}
+```
+
+### /api/feiras/{id}
+
+#### DELETE
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| id | path | Id da Feira | Yes | integer |
+
+##### Responses
+
+Code = 200
+``` json
+{
+  "succeeded": true,
+  "message": "Feira deleted successfully"
+}
+```
+
+Code = 400
+``` json
+{
+  "succeeded": false,
+  "message": "Invalid Id"
+}
+```
+
+Code = 404
+``` json
+{
+  "succeeded": false,
+  "message": "Id not found"
+}
+```
+
+#### PUT
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| id | path | Id da Feira | Yes | integer |
+
+##### Body
+``` json
+{
+  "longitude": -46442096,
+  "latitude": -23599344,
+  "setor_censitario": "355030833000015",
+  "area_ponderacao": "3550308005275",
+  "regiao": "Leste",
+  "subregiao": "Leste 2",
+  "nome_feira": "JARDIM IGUATEMI",
+  "registro": "5125-0",
+  "logradouro": "RUA CUBAS DE MENDONCA",
+  "numero": "",
+  "bairro": "JD IGUATEMI",
+  "codigo_distrito": 32,
+  "codigo_subprefeitura": 30
+}
+```
+
+##### Responses
+
+Code = 200
+``` json
+{
+  "succeeded": true,
+  "data": {
+    "id": 83,
+    "longitude": -46442096,
+    "latitude": -23599344,
+    "setor_censitario": "355030833000015",
+    "area_ponderacao": "3550308005275",
+    "regiao": "Leste",
+    "subregiao": "Leste 2",
+    "nome_feira": "JARDIM IGUATEMI",
+    "registro": "5125-0",
+    "logradouro": "RUA CUBAS DE MENDONCA",
+    "numero": "",
+    "bairro": "JD IGUATEMI",
+    "distrito": {
+      "codigo_distrito": 32,
+      "nome_distrito": "IGUATEMI"
+    },
+    "subprefeitura": {
+      "codigo_subprefeitura": 30,
+      "nome_subprefeitura": "SAO MATEUS"
+    }
+  }
+}
+```
+
+Code = 400
+``` json
+{
+  "succeeded": false,
+  "message": "Invalid Id"
+}
+```
+
+Code = 400
+``` json
+{
+  "succeeded": false,
+  "errors": {
+    "NomeFeira": [
+      "The NomeFeira field is required"
+    ]
+  }
+}
+```
+
+Code = 404
+``` json
+{
+  "succeeded": false,
+  "message": "Id not found"
+}
+```
+
+### /api/feiras
+##### Parameters
+
+##### Body
+``` json
+{
+  "longitude": -46442096,
+  "latitude": -23599344,
+  "setor_censitario": "355030833000015",
+  "area_ponderacao": "3550308005275",
+  "regiao": "Leste",
+  "subregiao": "Leste 2",
+  "nome_feira": "JARDIM IGUATEMI",
+  "registro": "5125-0",
+  "logradouro": "RUA CUBAS DE MENDONCA",
+  "numero": "",
+  "bairro": "JD IGUATEMI",
+  "codigo_distrito": 32,
+  "codigo_subprefeitura": 30
+}
+```
+
+#### POST
+##### Responses
+
+Code = 200
+``` json
+{
+  "succeeded": true,
+  "data": {
+    "id": 83,
+    "longitude": -46442096,
+    "latitude": -23599344,
+    "setor_censitario": "355030833000015",
+    "area_ponderacao": "3550308005275",
+    "regiao": "Leste",
+    "subregiao": "Leste 2",
+    "nome_feira": "JARDIM IGUATEMI",
+    "registro": "5125-0",
+    "logradouro": "RUA CUBAS DE MENDONCA",
+    "numero": "",
+    "bairro": "JD IGUATEMI",
+    "distrito": {
+      "codigo_distrito": 32,
+      "nome_distrito": "IGUATEMI"
+    },
+    "subprefeitura": {
+      "codigo_subprefeitura": 30,
+      "nome_subprefeitura": "SAO MATEUS"
+    }
+  }
+}
+```
+
+Code = 400
+``` json
+{
+  "succeeded": false,
+  "errors": {
+    "NomeFeira": [
+      "The NomeFeira field is required"
+    ]
+  }
+}
+```
+
+Code = 404
+``` json
+{
+  "succeeded": false,
+  "message": "Subprefeitura not found"
+}
+```
+
+Code = 404
+``` json
+{
+  "succeeded": false,
+  "message": "Distrito not found"
+}
+```
+
+### /api/distritos
+
+#### GET
+##### Responses
+
+Code = 200
+``` json
+{
+  "succeeded": true,
+  "data": [
+    {
+      "codigo_distrito": 1,
+      "nome_distrito": "AGUA RASA"
+    }
+  ]
+}
+```
+
+Code = 404
+``` json
+{
+  "succeeded": false,
+  "message": "No Distritos found"
+}
+```
+
+### /api/distritos/{id}
+
+#### GET
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| id | path | Id do Distrito | Yes | integer |
+
+##### Responses
+
+Code = 200
+``` json
+{
+  "succeeded": true,
+  "data": {
+    "codigo_distrito": 1,
+    "nome_distrito": "AGUA RASA"
+  }
+}
+```
+
+Code = 400
+``` json
+{
+  "succeeded": false,
+  "message": "Invalid Id"
+}
+```
+
+Code = 404
+``` json
+{
+  "succeeded": false,
+  "message": "Distrito not found"
+}
+```
+
+### /api/subprefeituras/{id}
+
+#### GET
+##### Parameters
+
+| Name | Located in | Description | Required | Schema |
+| ---- | ---------- | ----------- | -------- | ---- |
+| id | path | Id da Subprefeitura | Yes | integer |
+
+##### Responses
+
+Code = 200
+``` json
+{
+  "succeeded": true,
+  "data": {
+    "codigo_subprefeitura": 1,
+      "nome_subprefeitura": "PERUS"
+  }
+}
+```
+
+Code = 400
+``` json
+{
+  "succeeded": false,
+  "message": "Invalid Id"
+}
+```
+
+Code = 404
+``` json
+{
+  "succeeded": false,
+  "message": "Subprefeitura not found"
+}
+```
+
+### /api/subprefeituras
+
+#### GET
+##### Responses
+
+Code = 200
+``` json
+{
+  "succeeded": true,
+  "data": [
+    {
+      "codigo_subprefeitura": 1,
+      "nome_subprefeitura": "PERUS"
+    }
+  ]
+}
+```
+
+Code = 404
+``` json
+{
+  "succeeded": false,
+  "message": "No Subprefeituras found"
+}
+```

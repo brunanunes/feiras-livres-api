@@ -1,9 +1,6 @@
 USE FeiraDB
 GO
 
-DECLARE @PATH_DEINFO_AB_FEIRASLIVRES_2014 VARCHAR(256)
-SET @PATH_DEINFO_AB_FEIRASLIVRES_2014 = 'C:\Users\bruna\source\repos\feira-livre-api\database\DEINFO_AB_FEIRASLIVRES_2014.csv'
-
 BEGIN TRY
     BEGIN TRANSACTION;
         CREATE TABLE #TMP_TBL_FEIRAS(
@@ -28,7 +25,7 @@ BEGIN TRY
  
 		-- import the file
 		BULK INSERT #TMP_TBL_FEIRAS
-		FROM 'C:\Users\bruna\source\repos\feira-livre-api\database\DEINFO_AB_FEIRASLIVRES_2014.csv'
+		FROM 'C:\Users\username\source\repos\feira-livre-api\database\DEINFO_AB_FEIRASLIVRES_2014.csv'
 		WITH
 		(
 			FORMAT='CSV',

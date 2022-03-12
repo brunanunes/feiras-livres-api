@@ -136,7 +136,7 @@ namespace FeirasLivres.Application.Services
                 if (feira == null)
                 {
                     _logger.LogInformation("Not Found");
-                    throw new ApiException("Feira found") { StatusCode = (int)HttpStatusCode.NotFound };
+                    throw new ApiException("Id not found") { StatusCode = (int)HttpStatusCode.NotFound };
                 }
 
                 _logger.LogInformation("Searching foreign keys");

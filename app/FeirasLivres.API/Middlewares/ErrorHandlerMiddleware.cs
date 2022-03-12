@@ -2,6 +2,8 @@
 using FeirasLivres.Core.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -45,7 +47,18 @@ namespace FeirasLivres.API.Middlewares
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         break;
                 }
-                var result = JsonConvert.SerializeObject(responseModel);
+
+                var serializerSettings = new JsonSerializerSettings();
+
+                serializerSettings.ContractResolver = new DefaultContractResolver
+                {
+                    NamingStrategy = new SnakeCaseNamingStrategy()
+                };
+                serializerSettings.Converters.Add(new StringEnumConverter());
+                serializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                serializerSettings.NullValueHandling = NullValueHandling.Ignore;
+
+                var result = JsonConvert.SerializeObject(responseModel, serializerSettings);
 
                 await response.WriteAsync(result);
             }

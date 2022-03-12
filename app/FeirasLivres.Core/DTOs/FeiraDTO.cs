@@ -4,7 +4,7 @@ namespace FeirasLivres.Core.DTOs
 {
     public class FeiraDTO
     {        
-        [Required(ErrorMessage = "The {0} field is required")]
+        [Required(ErrorMessage = "The {0} field is required")]        
         public int Longitude { get; set; }
 
         [Required(ErrorMessage = "The {0} field is required")]
@@ -31,13 +31,10 @@ namespace FeirasLivres.Core.DTOs
         [Required(ErrorMessage = "The {0} field is required")]
         public string Logradouro { get; set; }
 
-        [Required(ErrorMessage = "The {0} field is required")]
         public string Numero { get; set; }
 
-        [Required(ErrorMessage = "The {0} field is required")]
         public string Bairro { get; set; }
 
-        [Required(ErrorMessage = "The {0} field is required")]
         public string Referencia { get; set; }
 
         [Required(ErrorMessage = "The {0} field is required")]

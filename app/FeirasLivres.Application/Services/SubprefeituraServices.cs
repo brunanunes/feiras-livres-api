@@ -47,7 +47,7 @@ namespace FeirasLivres.Application.Services
             if (subprefeituras.Count == 0)
             {
                 _logger.LogError("Not Found");
-                throw new ApiException("No Subprefeitura found") { StatusCode = (int)HttpStatusCode.NotFound };
+                throw new ApiException("No Subprefeituras found") { StatusCode = (int)HttpStatusCode.NotFound };
             }
 
             return _mapper.Map<List<Core.DTOs.SubprefeituraDTO>>(subprefeituras).ToList();
